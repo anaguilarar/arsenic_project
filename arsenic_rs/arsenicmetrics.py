@@ -1,11 +1,39 @@
+import os
+import matplotlib.pyplot as plt
+import pickle
+import math
+import pandas as pd
+import numpy as np
+
+import geopandas as gpd
+import rasterio
+from affine import Affine
+from rasterio.plot import plotting_extent
+
+from scipy import stats
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import RobustScaler
+from skimage.segmentation import mark_boundaries
+from skimage.segmentation import slic
+
+from arsenic_rs import clusterfunctions
+from arsenic_rs import gisfunctions
+from arsenic_rs import arsenicmetrics
+
 ### arsenicrs_metrics
 
 def get_imagesegmentation(rasterdata, nsegments, compactness =50, maskimage = None, 
                           rgb_colnames = ['std', 'mean', 'difference']):
     
-    '''apply image segmentation algorithm to a composite rasterio image'''
+    '''
+    apply image segmentation algorithm to a composite rasterio image
+    however the composite image must have the following structure:
+    1) standard deviation, 2) average, 3) maximum 4) minimum,
+    '''
+
     ## identify columns for each channel
-    ## 1) standard deviation, 2) average, 3) maximum 4) minimum,
+    ##
     dict_data = {}
     
     if 'std' in rgb_colnames:
