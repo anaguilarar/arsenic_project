@@ -88,7 +88,11 @@ def get_imagesegmentation(rasterdata, nsegments, compactness =50, maskimage = No
     
     return segments
 
+def scale_minmax (img):
 
+    for i in range(img.shape[2]):
+        img[:,:,i] = (img[:,:,i] - np.nanmin(img[:,:,i]))/(np.nanmax(img[:,:,i]) - np.nanmin(img[:,:,i]))
+    return img
 
 def get_healthmetrics(rasterdata, superpixels,maskimage = None,band_number = 3):
 
